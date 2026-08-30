@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Kalpayana is a dark gallery — force dark regardless of OS theme. */
+html {
+  color-scheme: dark;
+  background: #05070d;
+}
+body {
+  background: #05070d;
+  color: #e9edf5;
+}
+
+/* native <dialog> backdrop + reset */
+dialog {
+  max-width: none;
+  max-height: none;
+  background: transparent;
+}
+dialog::backdrop {
+  background: rgba(3, 5, 9, 0.9);
+  backdrop-filter: blur(2px);
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #2b3648 transparent;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Category label on cards (all screen sizes): hidden by default, fades in while
+ * the page is scrolling (JS toggles .badges-on) then auto-hides ~1s after
+ * scrolling stops. Also shows on hover (desktop). */
+.card-badge {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.badges-on .card-badge,
+.group:hover .card-badge {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ *
+ * Progressive ("gradient") blur for the header — 6 stacked backdrop  *
+ * layers, each blurring less and masked to fade out further down.    *
+ * Ported from portfolio.html.                                        *
+ * ------------------------------------------------------------------ */
+.header-blur-wrap {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  --blur: 16px;
+  --ratio: 2.4;
+}
+.header-blur-panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.header-blur-panel.is-1 {
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  -webkit-mask: linear-gradient(to bottom, #000 0% 20%, #0000 50%);
+  mask: linear-gradient(to bottom, #000 0% 20%, #0000 50%);
+}
+.header-blur-panel.is-2 {
+  -webkit-backdrop-filter: blur(calc(var(--blur) / var(--ratio)));
+  backdrop-filter: blur(calc(var(--blur) / var(--ratio)));
+  -webkit-mask: linear-gradient(to bottom, #0000 0%, #000 20% 40%, #0000 65%);
+  mask: linear-gradient(to bottom, #0000 0%, #000 20% 40%, #0000 65%);
+}
+.header-blur-panel.is-3 {
+  -webkit-backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio))));
+  backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio))));
+  -webkit-mask: linear-gradient(to bottom, #0000 10%, #000 40% 60%, #0000 80%);
+  mask: linear-gradient(to bottom, #0000 10%, #000 40% 60%, #0000 80%);
+}
+.header-blur-panel.is-4 {
+  -webkit-backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  -webkit-mask: linear-gradient(to bottom, #0000 30%, #000 60% 75%, #0000 95%);
+  mask: linear-gradient(to bottom, #0000 30%, #000 60% 75%, #0000 95%);
+}
+.header-blur-panel.is-5 {
+  -webkit-backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  -webkit-mask: linear-gradient(to bottom, #0000 50%, #000 75% 85%, #0000 100%);
+  mask: linear-gradient(to bottom, #0000 50%, #000 75% 85%, #0000 100%);
+}
+.header-blur-panel.is-6 {
+  -webkit-backdrop-filter: blur(
+    calc(
+      var(--blur) /
+        (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio))
+    )
+  );
+  backdrop-filter: blur(
+    calc(
+      var(--blur) /
+        (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio))
+    )
+  );
+  -webkit-mask: linear-gradient(to bottom, #0000 70%, #000 85% 95%, #0000 100%);
+  mask: linear-gradient(to bottom, #0000 70%, #000 85% 95%, #0000 100%);
+}
+
+/* The exact same 6-layer progressive blur as the header, flipped vertically —
+ * used by the gallery's bottom controls bar and the image-modal footer. */
+.footer-blur-wrap {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  --blur: 16px;
+  --ratio: 2.4;
+}
+.footer-blur-panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.footer-blur-panel.is-1 {
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  -webkit-mask: linear-gradient(to top, #000 0% 20%, #0000 50%);
+  mask: linear-gradient(to top, #000 0% 20%, #0000 50%);
+}
+.footer-blur-panel.is-2 {
+  -webkit-backdrop-filter: blur(calc(var(--blur) / var(--ratio)));
+  backdrop-filter: blur(calc(var(--blur) / var(--ratio)));
+  -webkit-mask: linear-gradient(to top, #0000 0%, #000 20% 40%, #0000 65%);
+  mask: linear-gradient(to top, #0000 0%, #000 20% 40%, #0000 65%);
+}
+.footer-blur-panel.is-3 {
+  -webkit-backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio))));
+  backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio))));
+  -webkit-mask: linear-gradient(to top, #0000 10%, #000 40% 60%, #0000 80%);
+  mask: linear-gradient(to top, #0000 10%, #000 40% 60%, #0000 80%);
+}
+.footer-blur-panel.is-4 {
+  -webkit-backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  -webkit-mask: linear-gradient(to top, #0000 30%, #000 60% 75%, #0000 95%);
+  mask: linear-gradient(to top, #0000 30%, #000 60% 75%, #0000 95%);
+}
+.footer-blur-panel.is-5 {
+  -webkit-backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  backdrop-filter: blur(
+    calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))
+  );
+  -webkit-mask: linear-gradient(to top, #0000 50%, #000 75% 85%, #0000 100%);
+  mask: linear-gradient(to top, #0000 50%, #000 75% 85%, #0000 100%);
+}
+.footer-blur-panel.is-6 {
+  -webkit-backdrop-filter: blur(
+    calc(
+      var(--blur) /
+        (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio))
+    )
+  );
+  backdrop-filter: blur(
+    calc(
+      var(--blur) /
+        (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio))
+    )
+  );
+  -webkit-mask: linear-gradient(to top, #0000 70%, #000 85% 95%, #0000 100%);
+  mask: linear-gradient(to top, #0000 70%, #000 85% 95%, #0000 100%);
+}
+
+/* ------------------------------------------------------------------ *
+ * Pinterest-style image loading: reserved space + shimmer + fade-in  *
+ * ------------------------------------------------------------------ */
+@keyframes kalp-shimmer {
+  0% {
+    background-position: -160% 0;
+  }
+  100% {
+    background-position: 160% 0;
+  }
+}
+.img-skeleton {
+  background-color: #10151f;
+  background-image: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: kalp-shimmer 1.4s ease-in-out infinite;
+}
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img-fade.is-loaded {
+  opacity: 1;
+}
+
+@keyframes kalp-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes kalp-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-skeleton {
+    animation: none;
+  }
+  .img-fade {
+    transition: none;
+  }
+  .animate-\[kalp-sheet-up_0\.24s_ease\],
+  .animate-\[kalp-fade-in_0\.2s_ease\] {
+    animation: none;
+  }
+}
